@@ -39,31 +39,45 @@ export default class MainSlider extends Slider {
         this.showSlides(this.slideIndex += n) 
     }
 
+    bindTriggers() {
+        this.btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.plusSlides(1)
+            })
+
+            const el = btn.parentNode.previousElementSibling;
+            el.addEventListener('click', e => {
+                e.preventDefault()
+                this.slideIndex = 1
+                this.showSlides(this.slideIndex)
+            })
+        })
+
+        document.querySelectorAll('.prevmodule').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                this.plusSlides(-1)
+            })
+        })
+        document.querySelectorAll('.nextmodule').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                this.plusSlides(1)
+            })
+        })
+    }
+
     render(){
-        try {
+        if(this.container) {
             // console.log(this.page, this.slides);
             try {
                 this.hanson = document.querySelector('.hanson'); 
             } catch (e) {console.log(e)};
-            
-            
-            this.btns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.plusSlides(1)
-                })
-
-                const el = btn.parentNode.previousElementSibling;
-                el.addEventListener('click', e => {
-                    e.preventDefault()
-                    this.slideIndex = 1
-                    this.showSlides(this.slideIndex)
-                })
-            })
 
             this.showSlides(this.slideIndex)
-        } catch (e) {
-            
+            this.bindTriggers()
         }
-
     }
 }
